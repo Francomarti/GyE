@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal SuTurf — Club Gimnasia</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="site">
+    <div class="eyebrow">SuTurf Tandil · Ing. Agr. Franco Martignoni</div>
+    <h1>Portal de mantenimiento — Club Gimnasia</h1>
+    <nav class="site">
+      <a href="index.html" class="active">Inicio</a>
+      <a href="cronograma.html">Cronograma</a>
+      <a href="facturas.html">Facturación</a>
+    </nav>
+  </header>
+
+  <div id="next-banner"></div>
+
+  <div class="home-cards">
+    <a class="home-card" href="cronograma.html">
+      <h2>Cronograma de trabajo</h2>
+      <p>Plan de intervenciones del ciclo, tareas realizadas y pendientes, balance contra la cuota fija.</p>
+    </a>
+    <a class="home-card" href="facturas.html">
+      <h2>Facturación y pagos</h2>
+      <p>Facturas generadas, pagos recibidos y saldo pendiente.</p>
+    </a>
+  </div>
+
+  <div class="footer-note">Este portal se actualiza editando los archivos en <code>/data</code> del repositorio.</div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+(async function () {
+  try {
+    const plan = await cargarJSON("data/plan.json");
+    const proxima = plan.tareas.find(t => t.estado !== "realizado");
+    if (proxima) {
+      document.getElementById("next-banner").innerHTML = `
+        <div class="next-banner">
+          <div class="label">Próxima tarea</div>
+          <div class="tarea">${proxima.tarea}</div>
+          <div class="meta">${proxima.mes} ${proxima.anio} · ${proxima.zona} · ${fmt(proxima.valor)}</div>
+        </div>`;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+})();
+</script>
+</body>
+</html>

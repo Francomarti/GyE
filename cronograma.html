@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cronograma — Portal SuTurf</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="site">
+    <div class="eyebrow">SuTurf Tandil · Ing. Agr. Franco Martignoni</div>
+    <h1>Cronograma de mantenimiento</h1>
+    <nav class="site">
+      <a href="index.html">Inicio</a>
+      <a href="cronograma.html" class="active">Cronograma</a>
+      <a href="facturas.html">Facturación</a>
+    </nav>
+  </header>
+
+  <div id="next-banner"></div>
+  <div class="cards" id="cards"></div>
+  <div id="lista"></div>
+
+  <div class="footer-note">Para actualizar: editar <code>data/plan.json</code> en el repositorio y hacer push.</div>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+(async function () {
+  const plan = await cargarJSON("data/plan.json");
+  const { meta, tareas } = plan;
+
+  const proxima = tareas.find(t => t.estado !== "realizado");
+  if (proxima) {
+    document.getElementById("next-banner").innerHTML = `
+      <div class="next-banner">
+        <div class="label">Próxima tarea</div>
+        <div class="tarea">${proxima.tarea}</div>
+        <div class="meta">${proxima.mes} ${proxima.anio} · ${proxima.zona} · ${fmt(proxima.valor)}</div>
+      </div>`;
+  }
+
+  const totalPlan = tareas.reduce((s, t) => s + Number(t.valor || 0), 0);
+  const totalRealizado = tareas.filter(t => t.estado === "realizado").reduce((s, t) => s + Number(t.valor || 0), 0);
+  const totalInterv = tareas.reduce((s, t) => s + Number(t.intervenciones || 0), 0);
+  const cuotaEsperada = meta.cuotaFija * meta.mesesTranscurridos;
+  const diferencia = totalRealizado - cuotaEsperada;
+
+  document.getElementById("cards").innerHTML = `
+    <div class="card"><div class="label">Cuota fija mensual</div><div class="value">${fmt(meta.cuotaFija)}</div></div>
+    <div class="card"><div class="label">Total plan anual</div><div class="value">${fmt(totalPlan)}</div><div class="sub">${totalInterv} intervenciones</div></div>
+    <div class="card"><div class="label">Realizado a la fecha</div><div class="value">${fmt(totalRealizado)}</div></div>
+    <div class="card ${diferencia >= 0 ? "pos" : "neg"}">
+      <div class="label">Balance vs. cuota cobrada</div>
+      <div class="value">${diferencia >= 0 ? "+" : ""}${fmt(diferencia)}</div>
+      <div class="sub">${meta.mesesTranscurridos} meses transcurridos</div>
+    </div>`;
+
+  const grupos = [];
+  tareas.forEach(t => {
+    const key = t.mes + "-" + t.anio;
+    let g = grupos.find(x => x.key === key);
+    if (!g) { g = { key, mes: t.mes, anio: t.anio, items: [] }; grupos.push(g); }
+    g.items.push(t);
+  });
+
+  document.getElementById("lista").innerHTML = grupos.map(g => `
+    <div class="section-title">${g.mes} <span>${g.anio}</span></div>
+    <div class="list">
+      ${g.items.map(t => `
+        <div class="item ${t.estado === "realizado" ? "done" : ""}">
+          <div class="check">${t.estado === "realizado" ? "✓" : ""}</div>
+          <div class="item-body">
+            <div class="tarea">${t.tarea}</div>
+            <div class="meta">${t.zona} · ${t.intervenciones} interv.${t.notas ? " · " + t.notas : ""}</div>
+          </div>
+          <div class="valor">${fmt(t.valor)}</div>
+        </div>`).join("")}
+    </div>`).join("");
+})();
+</script>
+</body>
+</html>
