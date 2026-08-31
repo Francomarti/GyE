@@ -1,35 +1,52 @@
 # Portal SuTurf — Club Gimnasia
 
-Sitio estático (HTML/CSS/JS, sin build) pensado para vivir en el mismo repo/GitHub Pages que usás para el proyecto de rindes.
+Sitio estático (HTML/CSS/JS, sin build) para GitHub Pages, con la identidad visual de SuTurf Tandil y Gimnasia y Esgrima Tandil.
 
-## Instalación
+## ⚠️ Si ya tenés el portal anterior subido a GyE
 
-1. Copiá toda esta carpeta (`index.html`, `cronograma.html`, `facturas.html`, `css/`, `js/`, `data/`, `.nojekyll`) dentro de tu repositorio.
-   - Si querés que conviva con el proyecto de rindes en el mismo repo, ponela en una subcarpeta, por ejemplo `/gimnasia`, y vas a acceder en `tuusuario.github.io/turepo/gimnasia/`.
-   - Si preferís un repo aparte, funciona igual poniéndola en la raíz.
-2. Hacé commit y push. GitHub Pages la publica sola (como ya te pasa con rindes), no hace falta ningún build step.
+Este paquete reemplaza `index.html`, `cronograma.html`, `facturas.html`, `css/style.css` y suma `assets/` y `data/facturas-pdf/`.
+
+**Antes de subir esta versión nueva**, abrí tu `data/facturas.json` actual en GitHub y copiá/guardá en algún lado el contenido si ya cargaste facturas reales — el `facturas.json` de este paquete trae de nuevo solo la fila de ejemplo, y no querés perder lo que ya cargaste. Después de subir la versión nueva, volvé a pegar tus facturas reales agregando el campo `"pdf": null` (o la ruta del PDF si lo subiste) a cada una.
+
+`plan.json` no cambió de estructura, así que si ya marcaste tareas como realizadas, podés subir la versión nueva sin miedo a perder eso — pero por las dudas, mismo consejo: si le hiciste cambios, guardalos aparte antes de sobreescribir.
+
+## Instalación / actualización
+
+1. Descomprimí el zip.
+2. En GitHub, "Add file" → "Upload files", arrastrá todo el contenido (respeta la estructura de carpetas).
+3. Commit. Esperá el redeploy (pestaña Actions) y refrescá con Ctrl+Shift+R.
 
 ## Cómo actualizar el contenido
 
-No hay backend ni base de datos: el sitio lee dos archivos JSON en `/data` y arma las páginas al vuelo con JavaScript. Para actualizar:
+- **Cronograma**: `data/plan.json`. Tildá tareas cambiando `"estado"` a `"realizado"`. Agregá tareas nuevas copiando el formato de una fila existente.
+- **Facturas**: `data/facturas.json`. Cada factura tiene `estado`, `montoPagado`, `fechaPago`, `medioPago`, y ahora `pdf`.
 
-- **Cronograma**: editá `data/plan.json`. Cada tarea tiene `estado: "planificado"` o `"realizado"` — cambiá ese valor para tildarla. Podés agregar tareas nuevas copiando el formato de una fila existente (asignale un `id` que no se repita). El campo `meta.mesesTranscurridos` es el que controla el cálculo de balance contra la cuota fija — subilo a mano mes a mes.
-- **Facturas**: editá `data/facturas.json`. Cada factura tiene `estado: "pendiente" | "parcial" | "pagada"`, y los campos `montoPagado` / `fechaPago` / `medioPago` para cuando se cobra. Ya viene una fila de ejemplo — reemplazala o borrala.
+### Cómo adjuntar el PDF de una factura
 
-Podés editar estos JSON directamente desde la web de GitHub (ícono de lápiz sobre el archivo) sin necesidad de clonar el repo ni usar la terminal — hacés el cambio, ponés un mensaje de commit y en menos de un minuto el sitio ya se actualiza solo.
+1. Subí el archivo PDF a la carpeta `data/facturas-pdf/` (Add file → Upload files, ahí también acepta arrastrar un solo PDF). Nombralo de forma clara, por ejemplo `factura-0002.pdf`.
+2. En el bloque de esa factura en `facturas.json`, poné la ruta en el campo `pdf`:
+
+```json
+"pdf": "data/facturas-pdf/factura-0002.pdf"
+```
+
+3. Si una factura todavía no tiene PDF cargado, dejá `"pdf": null` — en la tabla va a aparecer un guión en vez del botón.
 
 ## Estructura
 
 ```
-index.html          → portada con accesos a cronograma y facturación
-cronograma.html      → plan de tareas, resumen y balance vs. cuota fija
-facturas.html         → tabla de facturas, cobrado y saldo pendiente
-css/style.css         → estilos compartidos
-js/app.js             → helpers de formato y carga de datos
-data/plan.json        → datos del cronograma (editar acá)
-data/facturas.json    → datos de facturación (editar acá)
+index.html              → portada
+cronograma.html          → plan de tareas y balance vs. cuota fija
+facturas.html             → tabla de facturas, PDFs, cobrado y saldo
+css/style.css             → estilos e identidad visual
+js/app.js                 → helpers de formato y carga de datos
+assets/logo-suturf.png    → isotipo SuTurf Tandil
+assets/logo-gimnasia.png  → escudo Gimnasia y Esgrima Tandil
+data/plan.json             → datos del cronograma (editar acá)
+data/facturas.json         → datos de facturación (editar acá)
+data/facturas-pdf/         → PDFs de las facturas subidas
 ```
 
 ## Compartir con la dirigencia
 
-Una vez publicado, mandales directamente el link de `index.html` (o el de GitHub Pages con la subcarpeta si corresponde). Es de solo lectura — no pueden editar nada desde el navegador, así que no hay riesgo de que alguien te toque un número por accidente.
+Mandales el link de `index.html` (o la URL de GitHub Pages con la subcarpeta si corresponde). Es de solo lectura.

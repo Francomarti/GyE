@@ -9,14 +9,22 @@
 <body>
 <div class="wrap">
   <header class="site">
-    <div class="eyebrow">SuTurf Tandil · Ing. Agr. Franco Martignoni</div>
-    <h1>Facturación y pagos</h1>
+    <div class="brand-row">
+      <img src="assets/logo-suturf.png" alt="SuTurf Tandil">
+      <span class="x">×</span>
+      <img src="assets/logo-gimnasia.png" alt="Gimnasia y Esgrima Tandil">
+    </div>
+    <div class="header-titles">
+      <div class="eyebrow">SuTurf Tandil · Ing. Agr. Franco Martignoni</div>
+      <h1>Facturación y pagos</h1>
+    </div>
     <nav class="site">
       <a href="index.html">Inicio</a>
       <a href="cronograma.html">Cronograma</a>
       <a href="facturas.html" class="active">Facturación</a>
     </nav>
   </header>
+  <div class="gye-stripe"></div>
 
   <div class="cards" id="cards"></div>
 
@@ -30,12 +38,13 @@
         <th>Monto</th>
         <th>Estado</th>
         <th>Fecha pago</th>
+        <th>Factura</th>
       </tr>
     </thead>
     <tbody id="tabla-facturas"></tbody>
   </table>
 
-  <div class="footer-note">Para actualizar: editar <code>data/facturas.json</code> en el repositorio y hacer push.</div>
+  <div class="footer-note">Para actualizar: editar <code>data/facturas.json</code> en el repositorio y hacer push. Los PDF van en <code>data/facturas-pdf/</code>.</div>
 </div>
 
 <script src="js/app.js"></script>
@@ -67,6 +76,7 @@
         <td>${fmt(f.monto)}</td>
         <td><span class="estado-pill estado-${f.estado}">${estadoLabel[f.estado] || f.estado}</span></td>
         <td>${fmtFecha(f.fechaPago)}</td>
+        <td>${f.pdf ? `<a class="pdf-link" href="${f.pdf}" target="_blank" rel="noopener">📄 Ver PDF</a>` : `<span class="pdf-none">—</span>`}</td>
       </tr>`).join("");
 })();
 </script>
