@@ -8,6 +8,7 @@
     "estado": "pendiente",
     "montoPagado": 0,
     "fechaPago": null,
-    "medioPago": null
+    "medioPago": null,
+    "pdf": null
   }
 ]
