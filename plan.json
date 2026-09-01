@@ -5,6 +5,16 @@
     "cuotaFija": 400833,
     "mesesTranscurridos": 1
   },
+  "cambios": [
+    {
+      "id": 1,
+      "fecha": "2026-09",
+      "titulo": "Arenada adelantada a septiembre",
+      "detalle": "Estaba prevista para diciembre. Se adelantó por conseguir arena de médano a precio conveniente, aplicando en toda la cancha con refuerzo en el sector central de mayor desgaste. El trabajo estructural que hace ahora, en pleno reposo de la bermuda, se aprovecha mejor cuando entre en crecimiento en primavera/verano.",
+      "impacto": 700000,
+      "tipo": "adelanto"
+    }
+  ],
   "tareas": [
     { "id": 1, "mes": "Agosto", "anio": 2026, "tarea": "Aireado Slicer Profundo", "zona": "Cancha completa", "valor": 350000, "intervenciones": 1, "estado": "realizado", "notas": "3 pasadas ya realizadas" },
     { "id": 2, "mes": "Septiembre", "anio": 2026, "tarea": "Control de Malezas", "zona": "Cancha completa", "valor": 180000, "intervenciones": 1, "estado": "planificado", "notas": "" },
