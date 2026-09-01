@@ -349,6 +349,13 @@ table.facturas td {
   font-size: 17px;
   color: var(--navy);
 }
+
+.home-card p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
 /* ---------- Admin panel ---------- */
 
 .admin-card {
@@ -488,8 +495,197 @@ table.facturas td {
 .admin-item-title { font-size: 13.5px; font-weight: 600; }
 .admin-item-meta { font-size: 12px; color: var(--muted); }
 .btn-del { font-size: 12px; padding: 6px 10px; }
-.home-card p {
-  margin: 0;
+
+/* ---------- Hero de progreso ---------- */
+
+.hero-progress {
+  margin: 20px 20px 0;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+}
+
+.progress-ring {
+  width: 110px;
+  height: 110px;
+  min-width: 110px;
+  border-radius: 50%;
+  background: conic-gradient(var(--gold) calc(var(--pct) * 1%), var(--line) 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-ring-inner {
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-ring-inner span {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--navy);
+  line-height: 1.1;
+}
+
+.progress-ring-inner small {
+  font-size: 10px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.hero-stats {
+  flex: 1;
+  min-width: 200px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.hero-stat strong {
+  display: block;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--navy);
+}
+
+.hero-stat.pos strong { color: var(--verde-ok); }
+.hero-stat.neg strong { color: var(--rojo-alerta); }
+
+.hero-stat span {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.hero-footline {
+  flex-basis: 100%;
+  font-size: 11.5px;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
+@media (max-width: 480px) {
+  .hero-progress { flex-direction: column; text-align: center; }
+  .hero-stats { grid-template-columns: 1fr; gap: 12px; }
+}
+
+/* ---------- Timeline de cambios ---------- */
+
+.timeline {
+  margin: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.timeline-empty {
+  margin: 0 20px;
   font-size: 13px;
   color: var(--muted);
+  background: white;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 12px;
+  padding: 4px 0 18px;
+  position: relative;
+}
+
+.timeline-item:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 16px;
+  bottom: 0;
+  width: 2px;
+  background: var(--line);
+}
+
+.timeline-dot {
+  width: 12px;
+  height: 12px;
+  min-width: 12px;
+  border-radius: 50%;
+  background: var(--gold);
+  margin-top: 4px;
+}
+
+.timeline-body {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  flex: 1;
+}
+
+.timeline-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.timeline-tipo {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--navy);
+  background: #EAF0F8;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.timeline-fecha {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.timeline-titulo {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.timeline-detalle {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.timeline-impacto {
+  margin-top: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.mini-section-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 18px 20px 8px;
+}
+
+.mini-section-title span {
+  font-weight: 400;
+  color: var(--muted);
+  margin-left: 4px;
 }
