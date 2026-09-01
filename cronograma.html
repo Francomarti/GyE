@@ -16,7 +16,7 @@
     </div>
     <div class="header-titles">
       <div class="eyebrow">SuTurf Tandil · Ing. Agr. Franco Martignoni</div>
-      <h1>Cronograma de mantenimiento</h1>
+      <h1>Cómo venimos con el plan</h1>
     </div>
     <nav class="site">
       <a href="index.html">Inicio</a>
@@ -26,19 +26,60 @@
   </header>
   <div class="gye-stripe"></div>
 
+  <div class="hero-progress" id="hero"></div>
+
   <div id="next-banner"></div>
-  <div class="cards" id="cards"></div>
+
+  <div class="section-title">Cambios sobre el plan original <span>por qué se movió algo</span></div>
+  <div id="cambios-list" class="timeline"></div>
+
+  <div class="section-title">Detalle mes a mes <span>lo que se hizo y lo que falta</span></div>
   <div id="lista"></div>
 
-  <div class="footer-note">Para actualizar: editar <code>data/plan.json</code> en el repositorio y hacer push.</div>
+  <div class="footer-note">Última actualización según el cronograma cargado por SuTurf Tandil.</div>
 </div>
 
 <script src="js/app.js"></script>
 <script>
 (async function () {
   const plan = await cargarJSON("data/plan.json");
-  const { meta, tareas } = plan;
+  const { meta, tareas, cambios } = plan;
 
+  // ---- Hero de progreso ----
+  const totalInterv = tareas.reduce((s, t) => s + Number(t.intervenciones || 0), 0);
+  const hechasInterv = tareas.filter(t => t.estado === "realizado").reduce((s, t) => s + Number(t.intervenciones || 0), 0);
+  const pct = totalInterv ? Math.round((hechasInterv / totalInterv) * 100) : 0;
+
+  const totalPlan = tareas.reduce((s, t) => s + Number(t.valor || 0), 0);
+  const totalRealizado = tareas.filter(t => t.estado === "realizado").reduce((s, t) => s + Number(t.valor || 0), 0);
+  const cuotaEsperada = meta.cuotaFija * meta.mesesTranscurridos;
+  const diferencia = totalRealizado - cuotaEsperada;
+
+  document.getElementById("hero").innerHTML = `
+    <div class="progress-ring" style="--pct:${pct}">
+      <div class="progress-ring-inner">
+        <span>${pct}%</span>
+        <small>del plan hecho</small>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <strong>${hechasInterv} / ${totalInterv}</strong>
+        <span>intervenciones realizadas</span>
+      </div>
+      <div class="hero-stat">
+        <strong>${meta.mesesTranscurridos} / 12</strong>
+        <span>meses del contrato</span>
+      </div>
+      <div class="hero-stat ${diferencia >= 0 ? "pos" : "neg"}">
+        <strong>${diferencia >= 0 ? "+" : ""}${fmt(diferencia)}</strong>
+        <span>trabajo hecho vs. cuota cobrada</span>
+      </div>
+    </div>
+    <div class="hero-footline">Cuota fija: ${fmt(meta.cuotaFija)}/mes · Plan anual: ${fmt(totalPlan)} · Realizado: ${fmt(totalRealizado)}</div>
+  `;
+
+  // ---- Próxima tarea ----
   const proxima = tareas.find(t => t.estado !== "realizado");
   if (proxima) {
     document.getElementById("next-banner").innerHTML = `
@@ -49,22 +90,28 @@
       </div>`;
   }
 
-  const totalPlan = tareas.reduce((s, t) => s + Number(t.valor || 0), 0);
-  const totalRealizado = tareas.filter(t => t.estado === "realizado").reduce((s, t) => s + Number(t.valor || 0), 0);
-  const totalInterv = tareas.reduce((s, t) => s + Number(t.intervenciones || 0), 0);
-  const cuotaEsperada = meta.cuotaFija * meta.mesesTranscurridos;
-  const diferencia = totalRealizado - cuotaEsperada;
+  // ---- Cambios sobre el plan ----
+  const cambiosList = document.getElementById("cambios-list");
+  if (!cambios || cambios.length === 0) {
+    cambiosList.innerHTML = `<div class="timeline-empty">Por ahora el trabajo fue tal cual el plan original — sin cambios que registrar.</div>`;
+  } else {
+    const tipoLabel = { adelanto: "Adelanto", agregado: "Tarea agregada", modificacion: "Modificación" };
+    cambiosList.innerHTML = cambios.map(c => `
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-body">
+          <div class="timeline-top">
+            <span class="timeline-tipo">${tipoLabel[c.tipo] || "Cambio"}</span>
+            <span class="timeline-fecha">${c.fecha}</span>
+          </div>
+          <div class="timeline-titulo">${c.titulo}</div>
+          <div class="timeline-detalle">${c.detalle}</div>
+          ${c.impacto ? `<div class="timeline-impacto">Impacto: ${fmt(c.impacto)}</div>` : ""}
+        </div>
+      </div>`).join("");
+  }
 
-  document.getElementById("cards").innerHTML = `
-    <div class="card"><div class="label">Cuota fija mensual</div><div class="value">${fmt(meta.cuotaFija)}</div></div>
-    <div class="card"><div class="label">Total plan anual</div><div class="value">${fmt(totalPlan)}</div><div class="sub">${totalInterv} intervenciones</div></div>
-    <div class="card"><div class="label">Realizado a la fecha</div><div class="value">${fmt(totalRealizado)}</div></div>
-    <div class="card ${diferencia >= 0 ? "pos" : "neg"}">
-      <div class="label">Balance vs. cuota cobrada</div>
-      <div class="value">${diferencia >= 0 ? "+" : ""}${fmt(diferencia)}</div>
-      <div class="sub">${meta.mesesTranscurridos} meses transcurridos</div>
-    </div>`;
-
+  // ---- Detalle mes a mes ----
   const grupos = [];
   tareas.forEach(t => {
     const key = t.mes + "-" + t.anio;
@@ -74,7 +121,7 @@
   });
 
   document.getElementById("lista").innerHTML = grupos.map(g => `
-    <div class="section-title">${g.mes} <span>${g.anio}</span></div>
+    <div class="mini-section-title">${g.mes} <span>${g.anio}</span></div>
     <div class="list">
       ${g.items.map(t => `
         <div class="item ${t.estado === "realizado" ? "done" : ""}">
