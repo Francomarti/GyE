@@ -1,0 +1,11 @@
+[
+  {
+    "id": 1,
+    "fecha": "2026-09-01",
+    "producto": "Producto de fertilización",
+    "cantidad": "",
+    "valor": 19800,
+    "tareaRelacionada": "Control de Malezas — Septiembre 2026",
+    "notas": "Aplicación ya contemplada en la tarea de Control de Malezas ($180.000); este es el costo del producto en sí, no presupuestado originalmente."
+  }
+]
