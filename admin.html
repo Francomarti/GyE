@@ -34,6 +34,7 @@
     <button class="admin-tab active" data-tab="cronograma">Cronograma</button>
     <button class="admin-tab" data-tab="cambios">Cambios</button>
     <button class="admin-tab" data-tab="facturas">Facturas</button>
+    <button class="admin-tab" data-tab="insumos">Insumos</button>
   </div>
 
   <div id="tab-cronograma" class="admin-panel">
@@ -106,6 +107,26 @@
       </div>
       <input id="f-pdf" placeholder="Link de Drive al PDF (opcional, se puede sumar después)">
       <button class="btn-primary" id="add-factura">Agregar factura</button>
+    </div>
+  </div>
+
+  <div id="tab-insumos" class="admin-panel" style="display:none">
+    <div class="section-title">Insumos cargados</div>
+    <div id="insumos-list" class="admin-list"></div>
+
+    <div class="admin-card">
+      <h2>Agregar insumo nuevo</h2>
+      <div class="admin-row">
+        <input type="date" id="i-fecha">
+        <input type="number" id="i-valor" placeholder="Valor $">
+      </div>
+      <input id="i-producto" placeholder="Producto (ej: Fertilizante NPK)">
+      <div class="admin-row">
+        <input id="i-cantidad" placeholder="Cantidad (ej: 2 bolsas 25kg)">
+        <input id="i-tarea" placeholder="Tarea relacionada (opcional)">
+      </div>
+      <input id="i-notas" placeholder="Notas (opcional)">
+      <button class="btn-primary" id="add-insumo">Agregar insumo</button>
     </div>
   </div>
 
@@ -418,7 +439,76 @@ document.getElementById("add-factura").onclick = async () => {
 function cargarTodo() {
   cargarPlan();
   cargarFacturas();
+  cargarInsumos();
 }
+
+// ---------- Insumos ----------
+let insumosCache = null;
+
+async function cargarInsumos() {
+  const list = document.getElementById("insumos-list");
+  list.innerHTML = "Cargando...";
+  try {
+    const { sha, json } = await ghGetFile("data/insumos.json");
+    insumosCache = { sha, json };
+    renderInsumos();
+  } catch (e) {
+    list.innerHTML = `<div class="admin-error">${e.message}</div>`;
+  }
+}
+
+function renderInsumos() {
+  const list = document.getElementById("insumos-list");
+  if (insumosCache.json.length === 0) {
+    list.innerHTML = `<div class="admin-hint">Todavía no hay insumos cargados.</div>`;
+    return;
+  }
+  list.innerHTML = insumosCache.json.map(i => `
+    <div class="admin-item">
+      <div class="admin-item-body">
+        <div class="admin-item-title">${i.producto} — ${fmt(i.valor)}</div>
+        <div class="admin-item-meta">${i.fecha}${i.tareaRelacionada ? " · " + i.tareaRelacionada : ""}</div>
+      </div>
+      <button class="btn-ghost btn-del" data-deli="${i.id}">Eliminar</button>
+    </div>`).join("");
+
+  list.querySelectorAll("[data-deli]").forEach(btn => {
+    btn.onclick = async () => {
+      if (!confirm("¿Eliminar este insumo?")) return;
+      const id = Number(btn.dataset.deli);
+      insumosCache.json = insumosCache.json.filter(x => x.id !== id);
+      await guardarInsumos("Elimina insumo");
+    };
+  });
+}
+
+async function guardarInsumos(message) {
+  try {
+    const result = await ghPutFile("data/insumos.json", insumosCache.json, insumosCache.sha, message);
+    insumosCache.sha = result.content.sha;
+    renderInsumos();
+  } catch (e) {
+    alert("Error al guardar: " + e.message);
+  }
+}
+
+document.getElementById("add-insumo").onclick = async () => {
+  if (!insumosCache) return;
+  const producto = document.getElementById("i-producto").value.trim();
+  if (!producto) { alert("Escribí el nombre del producto"); return; }
+  const nextId = Math.max(0, ...insumosCache.json.map(i => i.id)) + 1;
+  insumosCache.json.push({
+    id: nextId,
+    fecha: document.getElementById("i-fecha").value || new Date().toISOString().slice(0, 10),
+    producto,
+    cantidad: document.getElementById("i-cantidad").value.trim(),
+    valor: Number(document.getElementById("i-valor").value) || 0,
+    tareaRelacionada: document.getElementById("i-tarea").value.trim(),
+    notas: document.getElementById("i-notas").value.trim()
+  });
+  await guardarInsumos("Agrega insumo nuevo");
+  ["i-producto", "i-cantidad", "i-valor", "i-tarea", "i-notas"].forEach(id => document.getElementById(id).value = "");
+};
 
 refreshTokenStatus();
 </script>
