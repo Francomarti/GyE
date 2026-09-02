@@ -41,6 +41,15 @@ header.site {
   padding: 18px 20px 0;
 }
 
+header.site.hero-bg {
+  background-image:
+    linear-gradient(180deg, rgba(0,20,45,0.45) 0%, var(--navy) 88%),
+    url('../assets/hero-gimnasia.jpg');
+  background-size: cover;
+  background-position: center 40%;
+}
+
+
 .brand-row {
   display: flex;
   align-items: center;
