@@ -44,6 +44,7 @@
         <input type="number" id="meses-input" min="1" max="12" style="max-width:100px">
         <button class="btn-primary" id="guardar-meses">Guardar</button>
       </div>
+      <p class="admin-hint" style="margin-top:8px;">La cuota mensual se recalcula sola: (plan total − cobrado) ÷ meses que quedan.</p>
     </div>
 
     <div class="section-title">Tareas</div>
@@ -257,10 +258,23 @@ function renderTareas() {
   });
 }
 
+function recalcularCuota() {
+  const total = planCache.json.tareas.reduce((s, t) => s + Number(t.valor || 0), 0);
+  const cobrado = (facturasCache && facturasCache.json)
+    ? facturasCache.json.reduce((s, f) => s + Number(f.montoPagado || 0), 0)
+    : 0;
+  const mesesTranscurridos = planCache.json.meta.mesesTranscurridos || 0;
+  const mesesRestantes = Math.max(1, 12 - mesesTranscurridos);
+  const saldo = total - cobrado;
+  planCache.json.meta.cuotaFija = Math.round(saldo / mesesRestantes);
+}
+
 async function guardarPlan(message) {
   try {
+    recalcularCuota();
     const result = await ghPutFile("data/plan.json", planCache.json, planCache.sha, message);
     planCache.sha = result.content.sha;
+    document.getElementById("meses-input").value = planCache.json.meta.mesesTranscurridos;
     renderTareas();
   } catch (e) {
     alert("Error al guardar: " + e.message);
@@ -409,6 +423,7 @@ async function guardarFacturas(message) {
     const result = await ghPutFile("data/facturas.json", facturasCache.json, facturasCache.sha, message);
     facturasCache.sha = result.content.sha;
     renderFacturas();
+    if (planCache) await guardarPlan("Recalcula cuota tras actualizar facturas");
   } catch (e) {
     alert("Error al guardar: " + e.message);
   }
