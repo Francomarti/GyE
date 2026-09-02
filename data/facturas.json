@@ -17,10 +17,10 @@
     "fecha": "2026-09-01",
     "concepto": "1er cuota Sep",
     "monto": 370000,
-    "estado": "pendiente",
-    "montoPagado": 0,
-    "fechaPago": null,
-    "medioPago": null,
+    "estado": "pagada",
+    "montoPagado": 370000,
+    "fechaPago": "2026-09-01",
+    "medioPago": "Transferencia",
     "pdf": null
   }
 ]
