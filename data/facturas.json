@@ -10,5 +10,17 @@
     "fechaPago": "2026-09-01",
     "medioPago": "Transferencia",
     "pdf": null
+  },
+  {
+    "id": 3,
+    "numero": "47",
+    "fecha": "2026-09-03",
+    "concepto": "Herbicidas",
+    "monto": 19800,
+    "estado": "pendiente",
+    "montoPagado": 0,
+    "fechaPago": null,
+    "medioPago": null,
+    "pdf": "https://drive.google.com/file/d/1vaJGX_xpu45Fj2sk0nydyIM7FQhDHnRp/view?usp=sharing"
   }
 ]
