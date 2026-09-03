@@ -1,17 +1,5 @@
 [
   {
-    "id": 1,
-    "numero": "0001",
-    "fecha": "2026-08-05",
-    "concepto": "slicer",
-    "monto": 0,
-    "estado": "pendiente",
-    "montoPagado": 0,
-    "fechaPago": null,
-    "medioPago": null,
-    "pdf": "https://drive.google.com/file/d/1tadxirfQLN_FFxI_mxlpnv_XonFM7El4/view?usp=sharing"
-  },
-  {
     "id": 2,
     "numero": "44",
     "fecha": "2026-09-01",
