@@ -27,6 +27,7 @@
   </header>
   <div class="gye-stripe"></div>
 
+  <div id="debt-banner"></div>
   <div class="cards" id="cards"></div>
 
   <div class="section-title">Detalle de facturas</div>
@@ -57,6 +58,15 @@
   const totalCobrado = facturas.reduce((s, f) => s + Number(f.montoPagado || 0), 0);
   const saldo = totalFacturado - totalCobrado;
   const pendientes = facturas.filter(f => f.estado !== "pagada").length;
+
+  if (saldo > 0) {
+    document.getElementById("debt-banner").innerHTML = `
+      <div class="next-banner" style="border-left-color:var(--rojo-alerta); background:var(--rojo-alerta-bg);">
+        <div class="label" style="color:var(--rojo-alerta);">⚠ Pagos pendientes</div>
+        <div class="tarea" style="color:var(--rojo-alerta);">${fmt(saldo)} adeudado</div>
+        <div class="meta">${pendientes} factura${pendientes === 1 ? "" : "s"} sin cobrar</div>
+      </div>`;
+  }
 
   document.getElementById("cards").innerHTML = `
     <div class="card"><div class="label">Total facturado</div><div class="value">${fmt(totalFacturado)}</div></div>
