@@ -27,6 +27,7 @@
   </header>
   <div class="gye-stripe"></div>
 
+  <div id="debt-banner"></div>
   <div id="next-banner"></div>
 
   <div class="home-cards">
@@ -48,6 +49,22 @@
 (async function () {
   try {
     const plan = await cargarJSON("data/plan.json");
+    const facturas = await cargarJSON("data/facturas.json");
+
+    const totalFacturado = facturas.reduce((s, f) => s + Number(f.monto || 0), 0);
+    const totalCobrado = facturas.reduce((s, f) => s + Number(f.montoPagado || 0), 0);
+    const saldo = totalFacturado - totalCobrado;
+    const pendientes = facturas.filter(f => f.estado !== "pagada").length;
+
+    if (saldo > 0) {
+      document.getElementById("debt-banner").innerHTML = `
+        <div class="next-banner" style="border-left-color:var(--rojo-alerta); background:var(--rojo-alerta-bg);">
+          <div class="label" style="color:var(--rojo-alerta);">⚠ Pagos pendientes</div>
+          <div class="tarea" style="color:var(--rojo-alerta);">${fmt(saldo)} adeudado</div>
+          <div class="meta">${pendientes} factura${pendientes === 1 ? "" : "s"} sin cobrar — ver detalle en Facturación</div>
+        </div>`;
+    }
+
     const proxima = plan.tareas.find(t => t.estado !== "realizado");
     if (proxima) {
       document.getElementById("next-banner").innerHTML = `
