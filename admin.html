@@ -213,6 +213,7 @@ document.querySelectorAll(".admin-tab").forEach(btn => {
 
 // ---------- Cronograma ----------
 let planCache = null;
+const MES_ORDEN = { "Agosto":1, "Septiembre":2, "Octubre":3, "Noviembre":4, "Diciembre":5, "Enero":6, "Febrero":7, "Marzo":8, "Marzo/Abril":8.5, "Abril":9, "Mayo":10, "Junio":11, "Julio":12 };
 
 async function cargarPlan() {
   const list = document.getElementById("tareas-list");
@@ -230,7 +231,11 @@ async function cargarPlan() {
 
 function renderTareas() {
   const list = document.getElementById("tareas-list");
-  list.innerHTML = planCache.json.tareas.map(t => `
+  const ordenadas = planCache.json.tareas.slice().sort((a, b) => {
+    if (a.anio !== b.anio) return a.anio - b.anio;
+    return (MES_ORDEN[a.mes] || 99) - (MES_ORDEN[b.mes] || 99);
+  });
+  list.innerHTML = ordenadas.map(t => `
     <div class="admin-item">
       <button class="check ${t.estado === "realizado" ? "done" : ""}" data-id="${t.id}">${t.estado === "realizado" ? "✓" : ""}</button>
       <div class="admin-item-body">
