@@ -29,8 +29,8 @@
     "fecha": "2026-09-11",
     "concepto": "Rolo Liso NUEVO",
     "monto": 260000,
-    "estado": "pendiente",
-    "montoPagado": 0,
+    "estado": "pagada",
+    "montoPagado": 260000,
     "fechaPago": null,
     "medioPago": null,
     "pdf": "https://drive.google.com/file/d/11B3yGzZhp6c-LC5zg32II3B6_L6kBIlC/view?usp=sharing"
