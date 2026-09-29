@@ -3,7 +3,7 @@
     "cliente": "Club Gimnasia",
     "periodo": "Agosto 2026 – Agosto 2027",
     "inicio": "Agosto 2026",
-    "cuotaFija": 411818,
+    "cuotaFija": 425455,
     "mesesTranscurridos": 1
   },
   "cambios": [
@@ -169,6 +169,17 @@
       "valor": 350000,
       "intervenciones": 1,
       "estado": "realizado",
+      "notas": ""
+    },
+    {
+      "id": 15,
+      "mes": "Septiembre",
+      "anio": 2026,
+      "tarea": "Pua hueca",
+      "zona": "Zona Central + Areas",
+      "valor": 150000,
+      "intervenciones": 1,
+      "estado": "planificado",
       "notas": ""
     }
   ]
