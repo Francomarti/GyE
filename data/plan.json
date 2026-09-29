@@ -3,7 +3,7 @@
     "cliente": "Club Gimnasia",
     "periodo": "Agosto 2026 – Agosto 2027",
     "inicio": "Agosto 2026",
-    "cuotaFija": 380000,
+    "cuotaFija": 411818,
     "mesesTranscurridos": 1
   },
   "cambios": [
@@ -155,6 +155,17 @@
       "anio": 2027,
       "tarea": "Aireado Slicer Profundo/Púa Hueca",
       "zona": "Cancha completa",
+      "valor": 350000,
+      "intervenciones": 1,
+      "estado": "planificado",
+      "notas": ""
+    },
+    {
+      "id": 14,
+      "mes": "Septiembre",
+      "anio": 2026,
+      "tarea": "Pua hueca",
+      "zona": "Auxiliares",
       "valor": 350000,
       "intervenciones": 1,
       "estado": "planificado",
