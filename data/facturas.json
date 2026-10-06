@@ -41,9 +41,9 @@
     "fecha": "2026-09-30",
     "concepto": "Servicios Septiembre",
     "monto": 468000,
-    "estado": "pendiente",
-    "montoPagado": 0,
-    "fechaPago": null,
+    "estado": "pagada",
+    "montoPagado": 468000,
+    "fechaPago": "2026-10-01",
     "medioPago": null,
     "pdf": "https://drive.google.com/file/d/1h4TLWuSpufUmiuhmC2tXJ9Cx-zlpawOb/view?usp=sharing"
   }
