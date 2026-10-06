@@ -17,8 +17,8 @@
     "fecha": "2026-09-03",
     "concepto": "Herbicidas",
     "monto": 19800,
-    "estado": "pendiente",
-    "montoPagado": 0,
+    "estado": "pagada",
+    "montoPagado": 19800,
     "fechaPago": "2026-09-03",
     "medioPago": "Transferencia",
     "pdf": "https://drive.google.com/file/d/1vaJGX_xpu45Fj2sk0nydyIM7FQhDHnRp/view?usp=sharing"
