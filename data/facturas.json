@@ -46,5 +46,17 @@
     "fechaPago": "2026-10-01",
     "medioPago": null,
     "pdf": "https://drive.google.com/file/d/1h4TLWuSpufUmiuhmC2tXJ9Cx-zlpawOb/view?usp=sharing"
+  },
+  {
+    "id": 6,
+    "numero": "60",
+    "fecha": "2026-11-02",
+    "concepto": "Servicio Octubre",
+    "monto": 468000,
+    "estado": "pendiente",
+    "montoPagado": 0,
+    "fechaPago": null,
+    "medioPago": null,
+    "pdf": "https://drive.google.com/file/d/1Vled5suNK3YngL_U0RCRBbNFT3oy4P2g/view?usp=sharing"
   }
 ]
