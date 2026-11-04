@@ -53,9 +53,9 @@
     "fecha": "2026-11-02",
     "concepto": "Servicio Octubre",
     "monto": 468000,
-    "estado": "pendiente",
-    "montoPagado": 0,
-    "fechaPago": null,
+    "estado": "pagada",
+    "montoPagado": 468000,
+    "fechaPago": "2026-11-03",
     "medioPago": null,
     "pdf": "https://drive.google.com/file/d/1Vled5suNK3YngL_U0RCRBbNFT3oy4P2g/view?usp=sharing"
   }
